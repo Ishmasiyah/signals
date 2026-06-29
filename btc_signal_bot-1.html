@@ -7,147 +7,46 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #0a0e1a;
-    color: #e0e0e0;
-    font-family: 'Rajdhani', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-  }
+  body { background: #0a0e1a; color: #e0e0e0; font-family: 'Rajdhani', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 16px; }
   .header { text-align: center; margin-bottom: 16px; }
   .header h1 { font-size: 22px; font-weight: 700; color: #00e5ff; letter-spacing: 3px; }
   .header p { color: #607d8b; font-size: 11px; letter-spacing: 2px; margin-top: 4px; }
-
-  .card {
-    background: #0d1b2a;
-    border: 1px solid #1a3a5c;
-    border-radius: 12px;
-    padding: 14px;
-    width: 100%;
-    max-width: 480px;
-    margin-bottom: 12px;
-  }
+  .card { background: #0d1b2a; border: 1px solid #1a3a5c; border-radius: 12px; padding: 14px; width: 100%; max-width: 480px; margin-bottom: 12px; }
   .card-title { color: #607d8b; font-size: 11px; letter-spacing: 2px; margin-bottom: 10px; }
-
   .pair-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-  .pair-btn {
-    background: #0a0e1a;
-    border: 1px solid #1a3a5c;
-    color: #607d8b;
-    padding: 8px 4px;
-    border-radius: 8px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-  }
+  .pair-btn { background: #0a0e1a; border: 1px solid #1a3a5c; color: #607d8b; padding: 8px 4px; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.2s; }
   .pair-btn.active { background: #00e5ff; color: #000; border-color: #00e5ff; }
   .pair-btn .pair-icon { font-size: 14px; display: block; margin-bottom: 2px; }
-
-  .capital-input {
-    width: 100%;
-    background: #0a0e1a;
-    border: 1px solid #1a3a5c;
-    color: #00e5ff;
-    padding: 10px;
-    border-radius: 8px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 20px;
-    text-align: center;
-  }
+  .capital-input { width: 100%; background: #0a0e1a; border: 1px solid #1a3a5c; color: #00e5ff; padding: 10px; border-radius: 8px; font-family: 'Share Tech Mono', monospace; font-size: 20px; text-align: center; }
   .capital-label { color: #607d8b; font-size: 11px; text-align: center; margin-top: 6px; }
-
   .price-row { display: flex; justify-content: space-between; align-items: center; }
   .price-val { font-family: 'Share Tech Mono', monospace; font-size: 22px; color: #00e5ff; }
   .price-change { font-size: 13px; }
-  .up { color: #00e676; }
-  .down { color: #ff1744; }
-
-  .signal-card {
-    background: #0d1b2a;
-    border-radius: 12px;
-    padding: 14px;
-    width: 100%;
-    max-width: 480px;
-    margin-bottom: 12px;
-    border: 2px solid #1a3a5c;
-    transition: border-color 0.3s;
-  }
-  .signal-card.buy { border-color: #00e676; }
-  .signal-card.sell { border-color: #ff1744; }
-  .signal-card.neutral { border-color: #ffc107; }
-
+  .up { color: #00e676; } .down { color: #ff1744; }
+  .signal-card { background: #0d1b2a; border-radius: 12px; padding: 14px; width: 100%; max-width: 480px; margin-bottom: 12px; border: 2px solid #1a3a5c; transition: border-color 0.3s; }
+  .signal-card.buy { border-color: #00e676; } .signal-card.sell { border-color: #ff1744; } .signal-card.neutral { border-color: #ffc107; }
   .signal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .badge { padding: 6px 16px; border-radius: 20px; font-size: 18px; font-weight: 700; letter-spacing: 2px; }
-  .badge.buy { background: #00e676; color: #000; }
-  .badge.sell { background: #ff1744; color: #fff; }
-  .badge.neutral { background: #ffc107; color: #000; }
-
+  .badge.buy { background: #00e676; color: #000; } .badge.sell { background: #ff1744; color: #fff; } .badge.neutral { background: #ffc107; color: #000; }
   .timer-box { background: #0a0e1a; border-radius: 8px; padding: 6px 12px; text-align: center; }
   .timer-label { font-size: 10px; color: #607d8b; letter-spacing: 1px; }
   .timer-val { font-family: 'Share Tech Mono', monospace; font-size: 16px; color: #ffc107; }
-
-  .code-box {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 22px;
-    color: #00e5ff;
-    background: #0a0e1a;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    letter-spacing: 4px;
-    margin-bottom: 10px;
-  }
-
+  .code-box { font-family: 'Share Tech Mono', monospace; font-size: 22px; color: #00e5ff; background: #0a0e1a; padding: 10px; border-radius: 8px; text-align: center; letter-spacing: 4px; margin-bottom: 10px; }
   .grid4 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
   .stat-box { background: #0a0e1a; padding: 8px; border-radius: 8px; text-align: center; }
   .stat-label { font-size: 10px; color: #607d8b; letter-spacing: 1px; }
   .stat-val { font-size: 15px; font-weight: 700; margin-top: 3px; }
-  .stat-val.green { color: #00e676; }
-  .stat-val.red { color: #ff1744; }
-  .stat-val.blue { color: #00e5ff; }
-  .stat-val.yellow { color: #ffc107; }
-
+  .stat-val.green { color: #00e676; } .stat-val.red { color: #ff1744; } .stat-val.blue { color: #00e5ff; } .stat-val.yellow { color: #ffc107; }
   .time-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-
-  .analysis {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: #90a4ae;
-    background: #0a0e1a;
-    padding: 10px;
-    border-radius: 8px;
-    line-height: 1.8;
-    margin-bottom: 10px;
-  }
-
-  .auto-status {
-    width: 100%;
-    padding: 12px;
-    background: #0a0e1a;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 13px;
-    color: #00e676;
-    font-family: 'Share Tech Mono', monospace;
-    letter-spacing: 1px;
-  }
-
-  .dot { width: 10px; height: 10px; border-radius: 50%; background: #607d8b; display: inline-block; margin-right: 6px; }
-  .dot.active { background: #00e676; box-shadow: 0 0 8px #00e676; animation: pulse 1s infinite; }
+  .analysis { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #90a4ae; background: #0a0e1a; padding: 10px; border-radius: 8px; line-height: 1.8; margin-bottom: 10px; }
+  .send-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #0088cc, #00e5ff); color: #000; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px; cursor: pointer; margin-top: 8px; }
+  .auto-status { width: 100%; padding: 12px; background: #0a0e1a; border-radius: 10px; text-align: center; font-size: 12px; color: #00e676; font-family: 'Share Tech Mono', monospace; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #00e676; display: inline-block; margin-right: 6px; box-shadow: 0 0 8px #00e676; animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
   .log-box { background: #0d1b2a; border: 1px solid #1a3a5c; border-radius: 12px; padding: 14px; width: 100%; max-width: 480px; max-height: 160px; overflow-y: auto; }
   .log-title { color: #607d8b; font-size: 11px; letter-spacing: 2px; margin-bottom: 8px; }
   .log-entry { font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 3px 0; border-bottom: 1px solid #0a0e1a; color: #607d8b; }
-  .log-entry.s { color: #00e676; }
-  .log-entry.e { color: #ff1744; }
-  .log-entry.i { color: #00e5ff; }
+  .log-entry.s { color: #00e676; } .log-entry.e { color: #ff1744; } .log-entry.i { color: #00e5ff; }
 </style>
 </head>
 <body>
@@ -157,26 +56,23 @@
   <p>AUTO SIGNAL · 30 MIN CYCLE · MULTI-PAIR</p>
 </div>
 
-<!-- Pair Selector -->
 <div class="card">
   <div class="card-title">📊 SELECT PAIR</div>
   <div class="pair-grid">
     <button class="pair-btn active" onclick="selectPair('BTCUSDT')" id="btn-BTCUSDT"><span class="pair-icon">₿</span>BTC</button>
     <button class="pair-btn" onclick="selectPair('ETHUSDT')" id="btn-ETHUSDT"><span class="pair-icon">Ξ</span>ETH</button>
-    <button class="pair-btn" onclick="selectPair('XAUUSD')" id="btn-XAUUSD"><span class="pair-icon">🥇</span>GOLD</button>
-    <button class="pair-btn" onclick="selectPair('EURUSD')" id="btn-EURUSD"><span class="pair-icon">€</span>EUR</button>
-    <button class="pair-btn" onclick="selectPair('GBPUSD')" id="btn-GBPUSD"><span class="pair-icon">£</span>GBP</button>
+    <button class="pair-btn" onclick="selectPair('XAUUSDT')" id="btn-XAUUSDT"><span class="pair-icon">🥇</span>GOLD</button>
+    <button class="pair-btn" onclick="selectPair('EURUSDT')" id="btn-EURUSDT"><span class="pair-icon">€</span>EUR</button>
+    <button class="pair-btn" onclick="selectPair('GBPUSDT')" id="btn-GBPUSDT"><span class="pair-icon">£</span>GBP</button>
   </div>
 </div>
 
-<!-- Capital -->
 <div class="card">
   <div class="card-title">💰 YOUR CAPITAL (USDT)</div>
   <input class="capital-input" id="capitalInput" type="number" value="130" min="1" oninput="updateCapital()">
   <div class="capital-label">LOT SIZE: <span id="lotDisplay" style="color:#00e676">$1.30</span> &nbsp;|&nbsp; TAKE PROFIT: <span id="tpDisplay" style="color:#ffc107">$0.663</span></div>
 </div>
 
-<!-- Price -->
 <div class="card">
   <div class="card-title" id="priceLabel">📡 LIVE BTCUSDT</div>
   <div class="price-row">
@@ -185,7 +81,6 @@
   </div>
 </div>
 
-<!-- Signal -->
 <div class="signal-card neutral" id="signalCard">
   <div class="signal-top">
     <span class="badge neutral" id="signalBadge">ANALYZING</span>
@@ -196,68 +91,60 @@
   </div>
   <div class="code-box" id="signalCode">· · · · · ·</div>
   <div class="grid4">
-    <div class="stat-box">
-      <div class="stat-label">DIRECTION</div>
-      <div class="stat-val yellow" id="dirVal">—</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">CONFIDENCE</div>
-      <div class="stat-val blue" id="confVal">—</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">LOT SIZE</div>
-      <div class="stat-val green" id="lotVal">—</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">TAKE PROFIT</div>
-      <div class="stat-val yellow" id="tpVal">—</div>
-    </div>
+    <div class="stat-box"><div class="stat-label">DIRECTION</div><div class="stat-val yellow" id="dirVal">—</div></div>
+    <div class="stat-box"><div class="stat-label">CONFIDENCE</div><div class="stat-val blue" id="confVal">—</div></div>
+    <div class="stat-box"><div class="stat-label">LOT SIZE</div><div class="stat-val green" id="lotVal">—</div></div>
+    <div class="stat-box"><div class="stat-label">TAKE PROFIT</div><div class="stat-val yellow" id="tpVal">—</div></div>
   </div>
   <div class="time-row">
-    <div class="stat-box">
-      <div class="stat-label">ENTRY TIME</div>
-      <div class="stat-val blue" id="entryTime">—</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">EXPIRY TIME</div>
-      <div class="stat-val red" id="expiryTime">—</div>
-    </div>
+    <div class="stat-box"><div class="stat-label">ENTRY TIME</div><div class="stat-val blue" id="entryTime">—</div></div>
+    <div class="stat-box"><div class="stat-label">EXPIRY TIME</div><div class="stat-val red" id="expiryTime">—</div></div>
   </div>
   <div class="analysis" id="analysisBox">Initializing AI engine...</div>
-  <div class="auto-status"><span class="dot active"></span>AUTO SENDING TO TELEGRAM EVERY 30 MIN</div>
+  <div class="auto-status"><span class="dot"></span>AUTO SENDING TO TELEGRAM EVERY 30 MIN</div>
+  <button class="send-btn" onclick="sendToTelegram()">📤 SEND NOW TO TELEGRAM</button>
 </div>
 
-<!-- Log -->
 <div class="log-box">
   <div class="log-title">SIGNAL LOG</div>
-  <div id="logContainer"><div class="log-entry i">Bot started. Auto-sending every 30 minutes.</div></div>
+  <div id="logContainer"><div class="log-entry i">Bot initialized. Ready.</div></div>
 </div>
 
 <script>
 const TELEGRAM_TOKEN = '8992436510:AAEg7fGlEWfjrT3XCqibv7bwtRre-70Aaq4';
 const CHAT_ID = '8914507631';
-const CYCLE_MS = 30 * 60 * 1000; // 30 minutes
+const CYCLE_MS = 30 * 60 * 1000;
 
+// Use Binance for ALL pairs (XAUUSDT, EURUSDT, GBPUSDT also available on Binance)
 const PAIRS = {
-  BTCUSDT: { name: 'BTC/USDT', decimals: 2 },
-  ETHUSDT: { name: 'ETH/USDT', decimals: 2 },
-  XAUUSD:  { name: 'XAU/USD (GOLD)', decimals: 2 },
-  EURUSD:  { name: 'EUR/USD', decimals: 5 },
-  GBPUSD:  { name: 'GBP/USD', decimals: 5 },
+  BTCUSDT: { name: 'BTC/USDT', symbol: 'BTCUSDT', decimals: 2 },
+  ETHUSDT: { name: 'ETH/USDT', symbol: 'ETHUSDT', decimals: 2 },
+  XAUUSDT: { name: 'XAU/USDT (GOLD)', symbol: 'XAUUSDT', decimals: 2 },
+  EURUSDT: { name: 'EUR/USDT', symbol: 'EURUSDT', decimals: 4 },
+  GBPUSDT: { name: 'GBP/USDT', symbol: 'GBPUSDT', decimals: 4 },
 };
 
 let currentPair = 'BTCUSDT';
 let currentSignal = null;
 let lastPrice = null;
-let priceHistories = { BTCUSDT:[], ETHUSDT:[], XAUUSD:[], EURUSD:[], GBPUSD:[] };
+let priceHistories = { BTCUSDT:[], ETHUSDT:[], XAUUSDT:[], EURUSDT:[], GBPUSDT:[] };
 let countdownInterval = null;
-let signalInterval = null;
 let capital = 130;
+
+function addLog(msg, type) {
+  type = type || '';
+  var c = document.getElementById('logContainer');
+  var e = document.createElement('div');
+  e.className = 'log-entry ' + type;
+  e.textContent = msg;
+  c.insertBefore(e, c.firstChild);
+  if (c.children.length > 30) c.removeChild(c.lastChild);
+}
 
 function selectPair(pair) {
   currentPair = pair;
   lastPrice = null;
-  document.querySelectorAll('.pair-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.pair-btn').forEach(function(b) { b.classList.remove('active'); });
   document.getElementById('btn-' + pair).classList.add('active');
   document.getElementById('priceLabel').textContent = '📡 LIVE ' + PAIRS[pair].name;
   document.getElementById('btcPrice').textContent = 'Loading...';
@@ -268,16 +155,16 @@ function selectPair(pair) {
 
 function updateCapital() {
   capital = parseFloat(document.getElementById('capitalInput').value) || 0;
-  const lot = (capital * 0.01).toFixed(2);
-  const tp = (parseFloat(lot) * 0.51).toFixed(3);
+  var lot = (capital * 0.01).toFixed(2);
+  var tp = (parseFloat(lot) * 0.51).toFixed(3);
   document.getElementById('lotDisplay').textContent = '$' + lot;
   document.getElementById('tpDisplay').textContent = '$' + tp;
 }
 
 function generateCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let code = '';
-  for (let i = 0; i < 7; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var code = '';
+  for (var i = 0; i < 7; i++) code += chars[Math.floor(Math.random() * chars.length)];
   return code;
 }
 
@@ -285,15 +172,13 @@ function getTimeStr(date) { return date.toTimeString().slice(0,5); }
 
 function startCountdown() {
   clearInterval(countdownInterval);
-  const expiry = Date.now() + CYCLE_MS;
-  countdownInterval = setInterval(() => {
-    const rem = expiry - Date.now();
-    if (rem <= 0) {
-      document.getElementById('timerVal').textContent = 'EXPIRED';
-      clearInterval(countdownInterval);
-    } else {
-      const mins = Math.floor(rem / 60000);
-      const secs = Math.ceil((rem % 60000) / 1000);
+  var expiry = Date.now() + CYCLE_MS;
+  countdownInterval = setInterval(function() {
+    var rem = expiry - Date.now();
+    if (rem <= 0) { document.getElementById('timerVal').textContent = 'EXPIRED'; clearInterval(countdownInterval); }
+    else {
+      var mins = Math.floor(rem / 60000);
+      var secs = Math.ceil((rem % 60000) / 1000);
       document.getElementById('timerVal').textContent = mins + 'm ' + secs + 's';
     }
   }, 1000);
@@ -301,32 +186,21 @@ function startCountdown() {
 
 async function fetchPrice(pair) {
   try {
-    if (pair === 'BTCUSDT' || pair === 'ETHUSDT') {
-      const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + pair);
-      const data = await res.json();
-      return parseFloat(data.price);
-    } else if (pair === 'XAUUSD') {
-      const res = await fetch('https://api.frankfurter.app/latest?from=XAU&to=USD');
-      const data = await res.json();
-      return data.rates?.USD || null;
-    } else {
-      const fx = pair === 'EURUSD' ? 'EUR' : 'GBP';
-      const res = await fetch('https://api.frankfurter.app/latest?from=' + fx + '&to=USD');
-      const data = await res.json();
-      return data.rates?.USD || null;
-    }
+    var res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + PAIRS[pair].symbol);
+    var data = await res.json();
+    return parseFloat(data.price);
   } catch(e) { return null; }
 }
 
 function analyzeMarket(prices) {
   if (prices.length < 1) return null;
-  const latest = prices[prices.length - 1];
-  const prev = prices.length >= 2 ? prices[prices.length - 2] : latest;
-  const change = ((latest - prev) / prev) * 100;
-  const shortMA = prices.slice(-Math.min(3,prices.length)).reduce((a,b)=>a+b,0)/Math.min(3,prices.length);
-  const longMA = prices.slice(-Math.min(prices.length,10)).reduce((a,b)=>a+b,0)/Math.min(prices.length,10);
+  var latest = prices[prices.length - 1];
+  var prev = prices.length >= 2 ? prices[prices.length - 2] : latest;
+  var change = ((latest - prev) / prev) * 100;
+  var shortMA = prices.slice(-Math.min(3,prices.length)).reduce(function(a,b){return a+b;},0)/Math.min(3,prices.length);
+  var longMA = prices.slice(-Math.min(prices.length,10)).reduce(function(a,b){return a+b;},0)/Math.min(prices.length,10);
 
-  let direction, confidence, trend, momentum;
+  var direction, confidence, trend, momentum;
   if (shortMA > longMA && change > 0) {
     direction='UP'; confidence=Math.min(95,62+Math.abs(change)*20); trend='BULLISH'; momentum='STRONG ↑';
   } else if (shortMA < longMA && change < 0) {
@@ -338,49 +212,46 @@ function analyzeMarket(prices) {
   } else {
     direction='HOLD'; confidence=45; trend='SIDEWAYS'; momentum='WEAK →';
   }
-  return { direction, confidence: confidence.toFixed(0), trend, momentum, change: change.toFixed(4), price: latest };
+  return { direction:direction, confidence:parseFloat(confidence).toFixed(0), trend:trend, momentum:momentum, change:parseFloat(change).toFixed(4), price:latest };
 }
 
 async function generateAndSendSignal() {
-  const pair = currentPair;
-  const price = await fetchPrice(pair);
+  var pair = currentPair;
+  var price = await fetchPrice(pair);
   if (!price) { addLog('Failed to fetch ' + PAIRS[pair].name, 'e'); return; }
 
-  const dec = PAIRS[pair].decimals;
-  const priceEl = document.getElementById('btcPrice');
-  const changeEl = document.getElementById('priceChange');
-  priceEl.textContent = '$' + price.toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec});
+  var dec = PAIRS[pair].decimals;
+  document.getElementById('btcPrice').textContent = '$' + price.toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec});
 
   if (lastPrice) {
-    const diff = price - lastPrice;
-    const pct = ((diff/lastPrice)*100).toFixed(4);
-    changeEl.textContent = (diff >= 0 ? '▲ +' : '▼ ') + pct + '%';
-    changeEl.className = 'price-change ' + (diff >= 0 ? 'up' : 'down');
+    var diff = price - lastPrice;
+    var pct = ((diff/lastPrice)*100).toFixed(4);
+    document.getElementById('priceChange').textContent = (diff >= 0 ? '▲ +' : '▼ ') + pct + '%';
+    document.getElementById('priceChange').className = 'price-change ' + (diff >= 0 ? 'up' : 'down');
   }
   lastPrice = price;
 
   priceHistories[pair].push(price);
   if (priceHistories[pair].length > 20) priceHistories[pair].shift();
 
-  const analysis = analyzeMarket(priceHistories[pair]);
+  var analysis = analyzeMarket(priceHistories[pair]);
   if (!analysis) return;
 
-  const lot = (capital * 0.01).toFixed(2);
-  const tp = (parseFloat(lot) * 0.51).toFixed(3);
-  const now = new Date();
-  const expiry = new Date(now.getTime() + CYCLE_MS);
-  const code = generateCode();
+  var lot = (capital * 0.01).toFixed(2);
+  var tp = (parseFloat(lot) * 0.51).toFixed(3);
+  var now = new Date();
+  var expiry = new Date(now.getTime() + CYCLE_MS);
+  var code = generateCode();
 
-  currentSignal = { ...analysis, code, lot, tp, entryTime: getTimeStr(now), expiryTime: getTimeStr(expiry), price, capital, pair: PAIRS[pair].name };
+  currentSignal = { direction:analysis.direction, confidence:analysis.confidence, trend:analysis.trend, momentum:analysis.momentum, change:analysis.change, price:price, code:code, lot:lot, tp:tp, entryTime:getTimeStr(now), expiryTime:getTimeStr(expiry), capital:capital, pair:PAIRS[pair].name };
 
-  // Update UI
-  const cls = analysis.direction==='UP' ? 'buy' : analysis.direction==='DOWN' ? 'sell' : 'neutral';
+  var cls = analysis.direction==='UP' ? 'buy' : analysis.direction==='DOWN' ? 'sell' : 'neutral';
   document.getElementById('signalCard').className = 'signal-card ' + cls;
-  const badge = document.getElementById('signalBadge');
+  var badge = document.getElementById('signalBadge');
   badge.className = 'badge ' + cls;
   badge.textContent = analysis.direction==='UP' ? '🟢 UP' : analysis.direction==='DOWN' ? '🔴 DOWN' : '🟡 HOLD';
   document.getElementById('signalCode').textContent = code;
-  const dv = document.getElementById('dirVal');
+  var dv = document.getElementById('dirVal');
   dv.className = 'stat-val ' + (analysis.direction==='UP'?'green':analysis.direction==='DOWN'?'red':'yellow');
   dv.textContent = analysis.direction;
   document.getElementById('confVal').textContent = analysis.confidence + '%';
@@ -404,56 +275,56 @@ async function generateAndSendSignal() {
   addLog('[' + getTimeStr(now) + '] ' + PAIRS[pair].name + ' | ' + code + ' → ' + analysis.direction + ' | ' + analysis.confidence + '%',
     analysis.direction==='UP'?'s':analysis.direction==='DOWN'?'e':'i');
 
-  // AUTO SEND — always
   await sendToTelegram();
 }
 
 async function sendToTelegram() {
-  if (!currentSignal) return;
-  const emoji = currentSignal.direction==='UP' ? '🟢' : currentSignal.direction==='DOWN' ? '🔴' : '🟡';
-  const arrow = currentSignal.direction==='UP' ? '📈' : currentSignal.direction==='DOWN' ? '📉' : '➡️';
-  const msg =
-    `⚡ *ISHMASIYAH SIGNAL BOT*\n` +
-    `━━━━━━━━━━━━━━━━━━\n` +
-    `${emoji} *SIGNAL: ${currentSignal.direction}* ${arrow}\n` +
-    `🔑 *CODE: ${currentSignal.code}*\n` +
-    `━━━━━━━━━━━━━━━━━━\n` +
-    `💱 *PAIR:* ${currentSignal.pair}\n` +
-    `💵 *PRICE:* $${currentSignal.price.toLocaleString()}\n` +
-    `💼 *CAPITAL:* $${currentSignal.capital}\n` +
-    `📦 *LOT SIZE:* $${currentSignal.lot} (1%)\n` +
-    `🎯 *TAKE PROFIT:* $${currentSignal.tp}\n` +
-    `📊 *YIELD:* 151%\n` +
-    `━━━━━━━━━━━━━━━━━━\n` +
-    `⏰ *ENTRY:* ${currentSignal.entryTime}\n` +
-    `⌛ *EXPIRY:* ${currentSignal.expiryTime}\n` +
-    `🎯 *CONFIDENCE:* ${currentSignal.confidence}%\n` +
-    `📈 *TREND:* ${currentSignal.trend}\n` +
-    `⚡ *MOMENTUM:* ${currentSignal.momentum}\n` +
-    `⏱ *CYCLE:* 30 MINUTES\n` +
-    `━━━━━━━━━━━━━━━━━━\n` +
-    `_Powered by Ishmasiyah AI_`;
+  if (!currentSignal) { addLog('No signal yet', 'e'); return; }
+  var emoji = currentSignal.direction==='UP' ? '🟢' : currentSignal.direction==='DOWN' ? '🔴' : '🟡';
+  var arrow = currentSignal.direction==='UP' ? '📈' : currentSignal.direction==='DOWN' ? '📉' : '➡️';
+  var msg =
+    '⚡ *ISHMASIYAH SIGNAL BOT*\n' +
+    '━━━━━━━━━━━━━━━━━━\n' +
+    emoji + ' *SIGNAL: ' + currentSignal.direction + '* ' + arrow + '\n' +
+    '🔑 *CODE: ' + currentSignal.code + '*\n' +
+    '━━━━━━━━━━━━━━━━━━\n' +
+    '💱 *PAIR:* ' + currentSignal.pair + '\n' +
+    '💵 *PRICE:* $' + currentSignal.price.toLocaleString() + '\n' +
+    '💼 *CAPITAL:* $' + currentSignal.capital + '\n' +
+    '📦 *LOT SIZE:* $' + currentSignal.lot + ' (1%)\n' +
+    '🎯 *TAKE PROFIT:* $' + currentSignal.tp + '\n' +
+    '📊 *YIELD:* 151%\n' +
+    '━━━━━━━━━━━━━━━━━━\n' +
+    '⏰ *ENTRY:* ' + currentSignal.entryTime + '\n' +
+    '⌛ *EXPIRY:* ' + currentSignal.expiryTime + '\n' +
+    '🎯 *CONFIDENCE:* ' + currentSignal.confidence + '%\n' +
+    '📈 *TREND:* ' + currentSignal.trend + '\n' +
+    '⚡ *MOMENTUM:* ' + currentSignal.momentum + '\n' +
+    '⏱ *CYCLE:* 30 MINUTES\n' +
+    '━━━━━━━━━━━━━━━━━━\n' +
+    '_Powered by Ishmasiyah AI_';
 
   try {
-    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({chat_id: CHAT_ID, text: msg, parse_mode:'Markdown'})
+    var res = await fetch('https://api.telegram.org/bot' + TELEGRAM_TOKEN + '/sendMessage', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown'})
     });
-    const data = await res.json();
-    if (data.ok) addLog('[AUTO] ' + currentSignal.pair + ' sent to Telegram ✓', 's');
+    var data = await res.json();
+    if (data.ok) addLog('Signal sent to Telegram ✓', 's');
     else addLog('Telegram error: ' + data.description, 'e');
-  } catch(e) { addLog('Send failed', 'e'); }
+  } catch(e) { addLog('Send failed: ' + e.message, 'e'); }
 }
 
-// Price refresh every 30 seconds for display
-setInterval(async () => {
-  const price = await fetchPrice(currentPair);
+// Price refresh every 30 seconds
+setInterval(async function() {
+  var price = await fetchPrice(currentPair);
   if (!price) return;
-  const dec = PAIRS[currentPair].decimals;
+  var dec = PAIRS[currentPair].decimals;
   document.getElementById('btcPrice').textContent = '$' + price.toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec});
   if (lastPrice) {
-    const diff = price - lastPrice;
-    const pct = ((diff/lastPrice)*100).toFixed(4);
+    var diff = price - lastPrice;
+    var pct = ((diff/lastPrice)*100).toFixed(4);
     document.getElementById('priceChange').textContent = (diff >= 0 ? '▲ +' : '▼ ') + pct + '%';
     document.getElementById('priceChange').className = 'price-change ' + (diff >= 0 ? 'up' : 'down');
   }
@@ -462,8 +333,8 @@ setInterval(async () => {
   lastPrice = price;
 }, 30000);
 
-// Generate and send signal every 30 minutes automatically
-signalInterval = setInterval(generateAndSendSignal, CYCLE_MS);
+// Auto signal every 30 minutes
+setInterval(generateAndSendSignal, CYCLE_MS);
 
 // Start immediately
 generateAndSendSignal();
