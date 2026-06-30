@@ -119,9 +119,9 @@ const CYCLE_MS = 30 * 60 * 1000;
 const PAIRS = {
   BTCUSDT: { name: 'BTC/USDT', symbol: 'BTCUSDT', decimals: 2, type: 'crypto' },
   ETHUSDT: { name: 'ETH/USDT', symbol: 'ETHUSDT', decimals: 2, type: 'crypto' },
-  XAUUSD:  { name: 'XAU/USD (GOLD)', symbol: 'XAU', decimals: 2, type: 'forex' },
-  EURUSD:  { name: 'EUR/USD', symbol: 'EUR', decimals: 5, type: 'forex' },
-  GBPUSD:  { name: 'GBP/USD', symbol: 'GBP', decimals: 5, type: 'forex' },
+  XAUUSD:  { name: 'XAU/USD (GOLD)', symbol: 'PAXGUSDT', decimals: 2, type: 'crypto' },
+  EURUSD:  { name: 'EUR/USD', symbol: 'EURUSDT', decimals: 5, type: 'crypto' },
+  GBPUSD:  { name: 'GBP/USD', symbol: 'GBPUSDT', decimals: 5, type: 'crypto' },
 };
 
 let currentPair = 'BTCUSDT';
@@ -187,17 +187,16 @@ function startCountdown() {
 async function fetchPrice(pair) {
   try {
     var p = PAIRS[pair];
-    if (p.type === 'crypto') {
-      var res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + p.symbol);
-      var data = await res.json();
-      return parseFloat(data.price);
-    } else {
-      // Forex/Gold via exchangerate.host (free, CORS-enabled)
-      var res2 = await fetch('https://api.exchangerate.host/latest?base=' + p.symbol + '&symbols=USD');
+    var res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + p.symbol);
+    var data = await res.json();
+    if (data.price) return parseFloat(data.price);
+    // fallback for GBP if GBPUSDT doesn't exist
+    if (pair === 'GBPUSD') {
+      var res2 = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=GBPUSDC');
       var data2 = await res2.json();
-      if (data2 && data2.rates && data2.rates.USD) return data2.rates.USD;
-      return null;
+      if (data2.price) return parseFloat(data2.price);
     }
+    return null;
   } catch(e) { return null; }
 }
 
