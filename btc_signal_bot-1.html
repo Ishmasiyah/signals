@@ -196,6 +196,17 @@ async function fetchPrice(pair) {
       var data2 = await res2.json();
       if (data2.price) return parseFloat(data2.price);
     }
+    // fallback chain for Gold
+    if (pair === 'XAUUSD') {
+      var goldSymbols = ['PAXGBUSD', 'XAUTUSDT', 'PAXGUSDC'];
+      for (var i = 0; i < goldSymbols.length; i++) {
+        try {
+          var resG = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + goldSymbols[i]);
+          var dataG = await resG.json();
+          if (dataG.price) return parseFloat(dataG.price);
+        } catch(eg) {}
+      }
+    }
     return null;
   } catch(e) { return null; }
 }
