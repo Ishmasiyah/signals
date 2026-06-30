@@ -67,11 +67,7 @@
   </div>
 </div>
 
-<div class="card">
-  <div class="card-title">💰 YOUR CAPITAL (USDT)</div>
-  <input class="capital-input" id="capitalInput" type="number" value="130" min="1" oninput="updateCapital()">
-  <div class="capital-label">LOT SIZE: <span id="lotDisplay" style="color:#00e676">$1.30</span> &nbsp;|&nbsp; TAKE PROFIT: <span id="tpDisplay" style="color:#ffc107">$0.663</span></div>
-</div>
+
 
 <div class="card">
   <div class="card-title" id="priceLabel">📡 LIVE BTCUSDT</div>
@@ -89,12 +85,12 @@
       <div class="timer-val" id="timerVal">--</div>
     </div>
   </div>
-  <div class="code-box" id="signalCode">· · · · · ·</div>
+  <div class="card-title" id="pairLabel" style="text-align:center; font-size:14px; color:#00e5ff; margin-bottom:10px;">—</div>
   <div class="grid4">
     <div class="stat-box"><div class="stat-label">DIRECTION</div><div class="stat-val yellow" id="dirVal">—</div></div>
     <div class="stat-box"><div class="stat-label">CONFIDENCE</div><div class="stat-val blue" id="confVal">—</div></div>
-    <div class="stat-box"><div class="stat-label">LOT SIZE</div><div class="stat-val green" id="lotVal">—</div></div>
-    <div class="stat-box"><div class="stat-label">TAKE PROFIT</div><div class="stat-val yellow" id="tpVal">—</div></div>
+    <div class="stat-box"><div class="stat-label">ENTRY/STOP</div><div class="stat-val green" id="lotVal">—</div></div>
+    <div class="stat-box"><div class="stat-label">TARGET</div><div class="stat-val yellow" id="tpVal">—</div></div>
   </div>
   <div class="time-row">
     <div class="stat-box"><div class="stat-label">ENTRY TIME</div><div class="stat-val blue" id="entryTime">—</div></div>
@@ -117,11 +113,11 @@ const CYCLE_MS = 30 * 60 * 1000;
 
 // Use Binance for ALL pairs (XAUUSDT, EURUSDT, GBPUSDT also available on Binance)
 const PAIRS = {
-  BTCUSDT: { name: 'BTC/USDT', symbol: 'BTCUSDT', decimals: 2, type: 'crypto' },
-  ETHUSDT: { name: 'ETH/USDT', symbol: 'ETHUSDT', decimals: 2, type: 'crypto' },
-  XAUUSD:  { name: 'XAU/USD (GOLD)', symbol: 'PAXGUSDT', decimals: 2, type: 'crypto' },
-  EURUSD:  { name: 'EUR/USD', symbol: 'EURUSDT', decimals: 5, type: 'crypto' },
-  GBPUSD:  { name: 'GBP/USD', symbol: 'GBPUSDT', decimals: 5, type: 'crypto' },
+  BTCUSDT: { name: 'BTC/USDT', symbol: 'BTCUSDT', decimals: 2, type: 'crypto', tradeType: 'binary' },
+  ETHUSDT: { name: 'ETH/USDT', symbol: 'ETHUSDT', decimals: 2, type: 'crypto', tradeType: 'binary' },
+  XAUUSD:  { name: 'XAU/USD (GOLD)', symbol: 'PAXGUSDT', decimals: 2, type: 'crypto', tradeType: 'spot', pip: 0.1 },
+  EURUSD:  { name: 'EUR/USD', symbol: 'EURUSDT', decimals: 5, type: 'crypto', tradeType: 'spot', pip: 0.0001 },
+  GBPUSD:  { name: 'GBP/USD', symbol: 'GBPUSDT', decimals: 5, type: 'crypto', tradeType: 'spot', pip: 0.0001 },
 };
 
 let currentPair = 'BTCUSDT';
@@ -151,14 +147,6 @@ function selectPair(pair) {
   document.getElementById('priceChange').textContent = '—';
   addLog('Switched to ' + PAIRS[pair].name, 'i');
   generateAndSendSignal();
-}
-
-function updateCapital() {
-  capital = parseFloat(document.getElementById('capitalInput').value) || 0;
-  var lot = (capital * 0.01).toFixed(2);
-  var tp = (parseFloat(lot) * 0.51).toFixed(3);
-  document.getElementById('lotDisplay').textContent = '$' + lot;
-  document.getElementById('tpDisplay').textContent = '$' + tp;
 }
 
 function generateCode() {
@@ -256,42 +244,64 @@ async function generateAndSendSignal() {
   var analysis = analyzeMarket(priceHistories[pair]);
   if (!analysis) return;
 
-  var lot = (capital * 0.01).toFixed(2);
-  var tp = (parseFloat(lot) * 0.51).toFixed(3);
   var now = new Date();
   var expiry = new Date(now.getTime() + CYCLE_MS);
-  var code = generateCode();
+  var p = PAIRS[pair];
 
-  currentSignal = { direction:analysis.direction, confidence:analysis.confidence, trend:analysis.trend, momentum:analysis.momentum, change:analysis.change, price:price, code:code, lot:lot, tp:tp, entryTime:getTimeStr(now), expiryTime:getTimeStr(expiry), capital:capital, pair:PAIRS[pair].name };
+  currentSignal = { direction:analysis.direction, confidence:analysis.confidence, trend:analysis.trend, momentum:analysis.momentum, change:analysis.change, price:price, entryTime:getTimeStr(now), expiryTime:getTimeStr(expiry), pair:p.name, tradeType:p.tradeType, decimals:p.decimals };
+
+  if (p.tradeType === 'spot' && analysis.direction !== 'HOLD') {
+    var pip = p.pip;
+    var slPips = 20;
+    var tpPips = 40;
+    var spreadPips = pair === 'XAUUSD' ? 3 : 1.5;
+    if (analysis.direction === 'UP') {
+      currentSignal.entryPrice = price;
+      currentSignal.stopLoss = price - (slPips * pip);
+      currentSignal.takeProfit = price + (tpPips * pip);
+    } else {
+      currentSignal.entryPrice = price;
+      currentSignal.stopLoss = price + (slPips * pip);
+      currentSignal.takeProfit = price - (tpPips * pip);
+    }
+    currentSignal.slPips = slPips;
+    currentSignal.tpPips = tpPips;
+    currentSignal.spreadPips = spreadPips;
+  }
 
   var cls = analysis.direction==='UP' ? 'buy' : analysis.direction==='DOWN' ? 'sell' : 'neutral';
   document.getElementById('signalCard').className = 'signal-card ' + cls;
   var badge = document.getElementById('signalBadge');
   badge.className = 'badge ' + cls;
   badge.textContent = analysis.direction==='UP' ? '🟢 UP' : analysis.direction==='DOWN' ? '🔴 DOWN' : '🟡 HOLD';
-  document.getElementById('signalCode').textContent = code;
+  document.getElementById('pairLabel').textContent = p.name + ' · ' + (p.tradeType === 'binary' ? 'BINARY' : 'SPOT/CFD');
   var dv = document.getElementById('dirVal');
   dv.className = 'stat-val ' + (analysis.direction==='UP'?'green':analysis.direction==='DOWN'?'red':'yellow');
   dv.textContent = analysis.direction;
   document.getElementById('confVal').textContent = analysis.confidence + '%';
-  document.getElementById('lotVal').textContent = '$' + lot;
-  document.getElementById('tpVal').textContent = '$' + tp;
+  if (p.tradeType === 'binary') {
+    document.getElementById('lotVal').textContent = 'Entry: ' + getTimeStr(now);
+    document.getElementById('tpVal').textContent = 'Exit: ' + getTimeStr(expiry);
+  } else if (analysis.direction !== 'HOLD') {
+    document.getElementById('lotVal').textContent = currentSignal.entryPrice.toFixed(p.decimals) + ' / ' + currentSignal.stopLoss.toFixed(p.decimals);
+    document.getElementById('tpVal').textContent = currentSignal.takeProfit.toFixed(p.decimals);
+  } else {
+    document.getElementById('lotVal').textContent = '—';
+    document.getElementById('tpVal').textContent = '—';
+  }
   document.getElementById('entryTime').textContent = getTimeStr(now);
   document.getElementById('expiryTime').textContent = getTimeStr(expiry);
   document.getElementById('analysisBox').textContent =
-    '> PAIR    : ' + PAIRS[pair].name + '\n' +
-    '> PRICE   : $' + price.toLocaleString() + '\n' +
+    '> PAIR    : ' + p.name + '\n' +
+    '> PRICE   : ' + price.toLocaleString(undefined,{minimumFractionDigits:p.decimals}) + '\n' +
     '> CHANGE  : ' + analysis.change + '%\n' +
     '> TREND   : ' + analysis.trend + '\n' +
     '> MOMENTUM: ' + analysis.momentum + '\n' +
-    '> CAPITAL : $' + capital + '\n' +
-    '> LOT     : $' + lot + ' (1%)\n' +
-    '> YIELD   : 151%\n' +
-    '> TP      : $' + tp + ' (51%)\n' +
+    '> MODE    : ' + (p.tradeType === 'binary' ? 'BINARY (entry/expiry)' : 'SPOT (entry/SL/TP)') + '\n' +
     '> CYCLE   : 30 MINUTES';
 
   startCountdown();
-  addLog('[' + getTimeStr(now) + '] ' + PAIRS[pair].name + ' | ' + code + ' → ' + analysis.direction + ' | ' + analysis.confidence + '%',
+  addLog('[' + getTimeStr(now) + '] ' + p.name + ' → ' + analysis.direction + ' | ' + analysis.confidence + '%',
     analysis.direction==='UP'?'s':analysis.direction==='DOWN'?'e':'i');
 
   await sendToTelegram();
@@ -299,29 +309,38 @@ async function generateAndSendSignal() {
 
 async function sendToTelegram() {
   if (!currentSignal) { addLog('No signal yet', 'e'); return; }
-  var emoji = currentSignal.direction==='UP' ? '🟢' : currentSignal.direction==='DOWN' ? '🔴' : '🟡';
-  var arrow = currentSignal.direction==='UP' ? '📈' : currentSignal.direction==='DOWN' ? '📉' : '➡️';
+  var s = currentSignal;
+  var emoji = s.direction==='UP' ? '🟢' : s.direction==='DOWN' ? '🔴' : '🟡';
+  var arrow = s.direction==='UP' ? '📈' : s.direction==='DOWN' ? '📉' : '➡️';
+  var dec = s.decimals;
+
   var msg =
     '⚡ *ISHMASIYAH SIGNAL BOT*\n' +
     '━━━━━━━━━━━━━━━━━━\n' +
-    emoji + ' *SIGNAL: ' + currentSignal.direction + '* ' + arrow + '\n' +
-    '🔑 *CODE: ' + currentSignal.code + '*\n' +
-    '━━━━━━━━━━━━━━━━━━\n' +
-    '💱 *PAIR:* ' + currentSignal.pair + '\n' +
-    '💵 *PRICE:* $' + currentSignal.price.toLocaleString() + '\n' +
-    '💼 *CAPITAL:* $' + currentSignal.capital + '\n' +
-    '📦 *LOT SIZE:* $' + currentSignal.lot + ' (1%)\n' +
-    '🎯 *TAKE PROFIT:* $' + currentSignal.tp + '\n' +
-    '📊 *YIELD:* 151%\n' +
-    '━━━━━━━━━━━━━━━━━━\n' +
-    '⏰ *ENTRY:* ' + currentSignal.entryTime + '\n' +
-    '⌛ *EXPIRY:* ' + currentSignal.expiryTime + '\n' +
-    '🎯 *CONFIDENCE:* ' + currentSignal.confidence + '%\n' +
-    '📈 *TREND:* ' + currentSignal.trend + '\n' +
-    '⚡ *MOMENTUM:* ' + currentSignal.momentum + '\n' +
-    '⏱ *CYCLE:* 30 MINUTES\n' +
-    '━━━━━━━━━━━━━━━━━━\n' +
-    '_Powered by Ishmasiyah AI_';
+    emoji + ' *SIGNAL: ' + s.direction + '* ' + arrow + '\n' +
+    '💱 *PAIR:* ' + s.pair + '\n' +
+    '🎯 *CONFIDENCE:* ' + s.confidence + '%\n' +
+    '📈 *TREND:* ' + s.trend + '\n' +
+    '⚡ *MOMENTUM:* ' + s.momentum + '\n' +
+    '━━━━━━━━━━━━━━━━━━\n';
+
+  if (s.tradeType === 'binary') {
+    msg +=
+      '💵 *PRICE:* $' + s.price.toLocaleString() + '\n' +
+      '⏰ *ENTRY:* ' + s.entryTime + '\n' +
+      '⌛ *EXPIRY:* ' + s.expiryTime + ' (30 min)\n';
+  } else if (s.direction !== 'HOLD') {
+    msg +=
+      '📍 *ENTRY PRICE:* ' + s.entryPrice.toFixed(dec) + '\n' +
+      '🛑 *STOP LOSS:* ' + s.stopLoss.toFixed(dec) + ' (' + s.slPips + ' pips)\n' +
+      '🎯 *TAKE PROFIT:* ' + s.takeProfit.toFixed(dec) + ' (' + s.tpPips + ' pips)\n' +
+      '📏 *SPREAD:* ~' + s.spreadPips + ' pips\n' +
+      '⚖️ *RISK/REWARD:* 1:' + (s.tpPips / s.slPips).toFixed(1) + '\n';
+  } else {
+    msg += '⏸ *No clear setup right now — wait for next signal*\n';
+  }
+
+  msg += '━━━━━━━━━━━━━━━━━━\n_Powered by Ishmasiyah AI_';
 
   try {
     var res = await fetch('https://api.telegram.org/bot' + TELEGRAM_TOKEN + '/sendMessage', {
