@@ -61,9 +61,9 @@
   <div class="pair-grid">
     <button class="pair-btn active" onclick="selectPair('BTCUSDT')" id="btn-BTCUSDT"><span class="pair-icon">₿</span>BTC</button>
     <button class="pair-btn" onclick="selectPair('ETHUSDT')" id="btn-ETHUSDT"><span class="pair-icon">Ξ</span>ETH</button>
-    <button class="pair-btn" onclick="selectPair('XAUUSDT')" id="btn-XAUUSDT"><span class="pair-icon">🥇</span>GOLD</button>
-    <button class="pair-btn" onclick="selectPair('EURUSDT')" id="btn-EURUSDT"><span class="pair-icon">€</span>EUR</button>
-    <button class="pair-btn" onclick="selectPair('GBPUSDT')" id="btn-GBPUSDT"><span class="pair-icon">£</span>GBP</button>
+    <button class="pair-btn" onclick="selectPair('XAUUSD')" id="btn-XAUUSD"><span class="pair-icon">🥇</span>GOLD</button>
+    <button class="pair-btn" onclick="selectPair('EURUSD')" id="btn-EURUSD"><span class="pair-icon">€</span>EUR</button>
+    <button class="pair-btn" onclick="selectPair('GBPUSD')" id="btn-GBPUSD"><span class="pair-icon">£</span>GBP</button>
   </div>
 </div>
 
@@ -117,17 +117,17 @@ const CYCLE_MS = 30 * 60 * 1000;
 
 // Use Binance for ALL pairs (XAUUSDT, EURUSDT, GBPUSDT also available on Binance)
 const PAIRS = {
-  BTCUSDT: { name: 'BTC/USDT', symbol: 'BTCUSDT', decimals: 2 },
-  ETHUSDT: { name: 'ETH/USDT', symbol: 'ETHUSDT', decimals: 2 },
-  XAUUSDT: { name: 'XAU/USDT (GOLD)', symbol: 'XAUUSDT', decimals: 2 },
-  EURUSDT: { name: 'EUR/USDT', symbol: 'EURUSDT', decimals: 4 },
-  GBPUSDT: { name: 'GBP/USDT', symbol: 'GBPUSDT', decimals: 4 },
+  BTCUSDT: { name: 'BTC/USDT', symbol: 'BTCUSDT', decimals: 2, type: 'crypto' },
+  ETHUSDT: { name: 'ETH/USDT', symbol: 'ETHUSDT', decimals: 2, type: 'crypto' },
+  XAUUSD:  { name: 'XAU/USD (GOLD)', symbol: 'XAU', decimals: 2, type: 'forex' },
+  EURUSD:  { name: 'EUR/USD', symbol: 'EUR', decimals: 5, type: 'forex' },
+  GBPUSD:  { name: 'GBP/USD', symbol: 'GBP', decimals: 5, type: 'forex' },
 };
 
 let currentPair = 'BTCUSDT';
 let currentSignal = null;
 let lastPrice = null;
-let priceHistories = { BTCUSDT:[], ETHUSDT:[], XAUUSDT:[], EURUSDT:[], GBPUSDT:[] };
+let priceHistories = { BTCUSDT:[], ETHUSDT:[], XAUUSD:[], EURUSD:[], GBPUSD:[] };
 let countdownInterval = null;
 let capital = 130;
 
@@ -186,9 +186,18 @@ function startCountdown() {
 
 async function fetchPrice(pair) {
   try {
-    var res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + PAIRS[pair].symbol);
-    var data = await res.json();
-    return parseFloat(data.price);
+    var p = PAIRS[pair];
+    if (p.type === 'crypto') {
+      var res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + p.symbol);
+      var data = await res.json();
+      return parseFloat(data.price);
+    } else {
+      // Forex/Gold via exchangerate.host (free, CORS-enabled)
+      var res2 = await fetch('https://api.exchangerate.host/latest?base=' + p.symbol + '&symbols=USD');
+      var data2 = await res2.json();
+      if (data2 && data2.rates && data2.rates.USD) return data2.rates.USD;
+      return null;
+    }
   } catch(e) { return null; }
 }
 
