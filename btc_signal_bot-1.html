@@ -328,7 +328,7 @@ function score(closes,highs,lows,volumes,idx){
   // 2. EMA trend aligned
   var emaUp=closes[ci]>e200[ci],emaDown=closes[ci]<e200[ci];
   var emaCross=e8[ci]>e21[ci];
-  if((buyV>sellV&&emaUp&&emaCross)||(sellV>buyV&&emaDown&&!emaCross)){pts+=1;(emaUp?buyV:sellV)++;checks.push({t:'✓ EMA trend aligned (200+8/21)',p:true});}
+  if((buyV>sellV&&emaUp&&emaCross)||(sellV>buyV&&emaDown&&!emaCross)){pts+=1;if(emaUp)buyV++;else sellV++;checks.push({t:'✓ EMA trend aligned (200+8/21)',p:true});}
   else checks.push({t:'✗ EMA trend not aligned',p:false});
 
   // 3. HTF trend (using 50-period as proxy for higher timeframe)
